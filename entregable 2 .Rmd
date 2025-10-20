@@ -1,0 +1,40 @@
+---
+title: "entregable 2"
+author: "Nayeli Chuquispuma"
+date: "2025-10-20"
+output: html_document
+---
+```{r}
+library(openxlsx)
+library(DT)
+library(htmltools)
+ruta_excel <- "Base de datos Est.2.xlsx"
+sheets <- getSheetNames(ruta_excel)
+```
+
+```{r}
+tablas_html <- lapply(sheets, function(nombre) {
+  df <- read.xlsx(ruta_excel, sheet = nombre)
+  tagList(
+    h2(nombre),
+    DT::datatable(df, options = list(pageLength = 10))
+  )
+})
+```
+
+```{r}
+save_html(
+  tagList(h1("Base de datos Est.2"), tablas_html),
+  file = "Base_de_datos_2.html")
+
+```
+
+```{r}
+rmarkdown::pandoc_available()  # para confirmar compatibilidad
+htmltools::html_print(
+  tagList(h1("Base de datos Est.2"), tablas_html)
+)
+
+```
+
+
